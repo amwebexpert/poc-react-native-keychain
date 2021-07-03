@@ -5,7 +5,7 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text style={{color: 'white', fontSize: 48}}>Test</Text>
+        <Text style={styles.title}>Test</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  title: {
+    color: 'red',
+    fontSize: 36,
   },
 });
 
