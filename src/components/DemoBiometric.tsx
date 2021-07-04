@@ -14,7 +14,6 @@ import {useMutation} from 'react-query';
 import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from '../service/secure-service';
 
 export const DemoBiometric = () => {
-  const [isBusy, setIsBusy] = useState(false);
   const mutation = useMutation(storeSecureData, {
     onMutate: variables => {
       console.log('A mutation is about to happen!', variables);
@@ -73,7 +72,6 @@ export const DemoBiometric = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text style={styles.title}>Val: {`${isBusy}`}</Text>
         <Text style={styles.title}>{mutation.status}</Text>
         <Button title="Supported biometric type" onPress={showSupportedBiometryType}>
           Supported biometric type
@@ -86,9 +84,6 @@ export const DemoBiometric = () => {
         </Button>
         <Button title="Biometric test" onPress={getSecureDataDemo}>
           Biometric test
-        </Button>
-        <Button title="Busy" onPress={() => setIsBusy(v => !v)}>
-          Busy
         </Button>
 
         {mutation.isLoading && <ActivityIndicator color="red" />}
@@ -106,5 +101,6 @@ const styles = StyleSheet.create({
   title: {
     color: 'red',
     fontSize: 36,
+    textAlign: 'center',
   },
 });
