@@ -38,10 +38,10 @@ export const DemoBiometric = () => {
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <Text style={styles.title}>Biometric</Text>
 
-        <AppButton title="Supported biometric type" onPress={showSupportedBiometryType} />
-        <AppButton title="Store secure data" onPress={storeDataDemo} />
-        <AppButton title="Remove secure data" onPress={removeDataDemo} />
-        <AppButton title="Biometric test" onPress={getSecureDataDemo} />
+        <AppButton disabled={isStoring} title="Supported biometric type" onPress={showSupportedBiometryType} />
+        <AppButton disabled={isStoring} title="Store secure data" onPress={storeDataDemo} />
+        <AppButton disabled={isStoring} title="Remove secure data" onPress={removeDataDemo} />
+        <AppButton disabled={isStoring} title="Biometric test" onPress={getSecureDataDemo} />
 
         {isStoring && <ActivityIndicator color="lightblue" />}
       </ScrollView>

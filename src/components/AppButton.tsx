@@ -2,14 +2,15 @@ import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 
 type Props = {
+  disabled: boolean;
   title: string;
   onPress: () => void;
 };
 
-export const AppButton = ({title, onPress}: Props) => {
+export const AppButton = ({title, disabled, onPress}: Props) => {
   return (
     <View style={styles.container}>
-      <Button title={title} onPress={onPress}>
+      <Button disabled={disabled} title={title} onPress={onPress}>
         {title}
       </Button>
     </View>
