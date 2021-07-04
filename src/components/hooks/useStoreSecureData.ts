@@ -1,8 +1,16 @@
 import {useMutation} from 'react-query';
-import {storeSecureData as useStoreSecureDataService} from '../../service/secure-service';
+import {storeSecureData as storeSecureDataService} from '../../service/secure-service';
 
 export const useStoreSecureData = () => {
-  const mutation = useMutation(useStoreSecureDataService, {
+  const storeData = async (data: unknown): Promise<boolean> => {
+    // Leave some time to the UI thread to update any spinner mechanism
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    const result = await storeSecureDataService(data);
+    return typeof result === 'object';
+  };
+
+  const mutation = useMutation(storeData, {
     onMutate: variables => {
       console.log('useStoreSecureData.onMutate', variables);
 
