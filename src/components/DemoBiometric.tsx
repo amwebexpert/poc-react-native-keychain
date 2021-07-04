@@ -1,8 +1,8 @@
 import React from 'react';
 import {Alert, Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, ToastAndroid} from 'react-native';
-import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from './secure-service';
+import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from '../service/secure-service';
 
-const App = () => {
+export const DemoBiometric = () => {
   const toastMessage = (msg: string) => {
     if (Platform.OS === 'android') {
       ToastAndroid.show(msg, ToastAndroid.SHORT);
@@ -73,5 +73,3 @@ const styles = StyleSheet.create({
     fontSize: 36,
   },
 });
-
-export default App;

@@ -12,7 +12,8 @@
   "dependencies": {
     "react": "17.0.1",
     "react-native": "0.64.1",
-    "react-native-keychain": "^7.0.0"
+    "react-native-keychain": "^7.0.0",
+    "react-query": "^3.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
