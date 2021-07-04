@@ -24,14 +24,14 @@ export const DemoBiometric = () => {
     storeSecureData(user);
   };
 
-  async function getSecureDataDemo() {
+  const getSecureDataDemo = async () => {
     try {
       const secureData = await getSecureData();
       toastMessage(`Secure data retrieved:\n\n ${JSON.stringify(secureData, null, 2)}`);
     } catch (error) {
       toastMessage("Keychain couldn't be accessed!");
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
