@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-} from 'react-native';
+import {ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
 import {useMutation} from 'react-query';
 import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from '../service/secure-service';
 import {AppButton} from './AppButton';
+import {useToast} from './hooks/useToast';
 
 export const DemoBiometric = () => {
+  const toastMessage = useToast();
   const mutation = useMutation(storeSecureData, {
     onMutate: variables => {
       console.log('A mutation is about to happen!', variables);
@@ -31,14 +24,6 @@ export const DemoBiometric = () => {
       console.log('onSettled', {data, error, variables, context});
     },
   });
-
-  const toastMessage = (msg: string) => {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(msg, ToastAndroid.SHORT);
-    } else {
-      Alert.alert(msg);
-    }
-  };
 
   const showSupportedBiometryType = async () => {
     const result = await getSupportedBiometryType();
