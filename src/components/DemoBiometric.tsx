@@ -1,8 +1,37 @@
 import React from 'react';
-import {Alert, Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, ToastAndroid} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+} from 'react-native';
+import {useMutation} from 'react-query';
 import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from '../service/secure-service';
 
 export const DemoBiometric = () => {
+  const mutation = useMutation(storeSecureData, {
+    onMutate: variables => {
+      console.log('A mutation is about to happen!', variables);
+
+      // Optionally return a context containing data to use when for example rolling back
+      return {timestamp: new Date().toLocaleTimeString()};
+    },
+    onError: (error, variables, context) => {
+      console.log('An error happened!', {error, variables, context});
+    },
+    onSuccess: (data, variables, context) => {
+      console.log('Success', {data, variables, context});
+    },
+    onSettled: (data, error, variables, context) => {
+      console.log('onSettled', {data, error, variables, context});
+    },
+  });
+
   const toastMessage = (msg: string) => {
     if (Platform.OS === 'android') {
       ToastAndroid.show(msg, ToastAndroid.SHORT);
@@ -23,8 +52,7 @@ export const DemoBiometric = () => {
       refreshToken: 'My-Refresh-Token',
     };
 
-    const result = await storeSecureData(user);
-    toastMessage(`Storage result: ${result}`);
+    mutation.mutate(user);
   };
 
   const removeDataDemo = async () => {
@@ -44,11 +72,11 @@ export const DemoBiometric = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text style={styles.title}>Test</Text>
+        <Text style={styles.title}>{mutation.isLoading}</Text>
         <Button title="Supported biometric type" onPress={showSupportedBiometryType}>
           Supported biometric type
         </Button>
-        <Button title="Store secure data" onPress={storeDataDemo}>
+        <Button title="Store secure data" onPress={() => storeDataDemo()}>
           Store secure data
         </Button>
         <Button title="Remove secure data" onPress={removeDataDemo}>
@@ -57,6 +85,7 @@ export const DemoBiometric = () => {
         <Button title="Biometric test" onPress={getSecureDataDemo}>
           Biometric test
         </Button>
+        {mutation.isLoading && <ActivityIndicator />}
       </ScrollView>
     </SafeAreaView>
   );
