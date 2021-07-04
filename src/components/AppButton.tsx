@@ -18,6 +18,6 @@ export const AppButton = ({title, onPress}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 4,
+    marginVertical: 8,
   },
 });
