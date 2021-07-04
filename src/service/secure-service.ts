@@ -39,7 +39,8 @@ export const getSupportedBiometryType = async (): Promise<null | BiometryTypeEnu
 };
 
 export const storeSecureData = async (data: unknown): Promise<boolean> => {
-  await new Promise(resolve => setTimeout(resolve, 100));
+  // Leave some time to the UI thread to update any spinner mechanism
+  await new Promise(resolve => setTimeout(resolve, 0));
   const result = await Keychain.setGenericPassword('secure-data', JSON.stringify(data), options);
   console.log('Storage result', result);
 
