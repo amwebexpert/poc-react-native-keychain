@@ -39,6 +39,7 @@ export const getSupportedBiometryType = async (): Promise<null | BiometryTypeEnu
 };
 
 export const storeSecureData = async (data: unknown): Promise<boolean> => {
+  console.log('inside service');
   const result = await Keychain.setGenericPassword('secure-data', JSON.stringify(data), options);
   console.log('Storage result', result);
 
