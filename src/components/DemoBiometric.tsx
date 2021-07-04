@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useMutation} from 'react-query';
 import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from '../service/secure-service';
-import { ActionButton } from './ActionButton';
+import {AppButton} from './AppButton';
 
 export const DemoBiometric = () => {
   const mutation = useMutation(storeSecureData, {
@@ -72,13 +72,12 @@ export const DemoBiometric = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-
         <Text style={styles.title}>{mutation.status}</Text>
 
-        <ActionButton title="Supported biometric type" onPress={showSupportedBiometryType} />
-        <ActionButton title="Store secure data" onPress={() => storeDataDemo()} />
-        <ActionButton title="Remove secure data" onPress={removeDataDemo} />
-        <ActionButton title="Biometric test" onPress={getSecureDataDemo} />
+        <AppButton title="Supported biometric type" onPress={showSupportedBiometryType} />
+        <AppButton title="Store secure data" onPress={() => storeDataDemo()} />
+        <AppButton title="Remove secure data" onPress={removeDataDemo} />
+        <AppButton title="Biometric test" onPress={getSecureDataDemo} />
 
         {mutation.isLoading && <ActivityIndicator color="red" />}
       </ScrollView>
