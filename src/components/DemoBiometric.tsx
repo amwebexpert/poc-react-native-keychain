@@ -1,29 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
-import {useMutation} from 'react-query';
-import {getSecureData, getSupportedBiometryType, removeSecureData, storeSecureData} from '../service/secure-service';
+import {ActivityIndicator, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {getSecureData, getSupportedBiometryType, removeSecureData} from '../service/secure-service';
 import {AppButton} from './AppButton';
+import {useStoreSecureData} from './hooks/useStoreSecureData';
 import {useToast} from './hooks/useToast';
 
 export const DemoBiometric = () => {
   const toastMessage = useToast();
-  const mutation = useMutation(storeSecureData, {
-    onMutate: variables => {
-      console.log('A mutation is about to happen!', variables);
-
-      // Optionally return a context containing data to use when for example rolling back
-      return {timestamp: new Date().toLocaleTimeString()};
-    },
-    onError: (error, variables, context) => {
-      console.log('An error happened!', {error, variables, context});
-    },
-    onSuccess: (data, variables, context) => {
-      console.log('Success', {data, variables, context});
-    },
-    onSettled: (data, error, variables, context) => {
-      console.log('onSettled', {data, error, variables, context});
-    },
-  });
+  const {isStoring, storeSecureData} = useStoreSecureData();
 
   const showSupportedBiometryType = async () => {
     const result = await getSupportedBiometryType();
@@ -37,7 +21,7 @@ export const DemoBiometric = () => {
       refreshToken: 'My-Refresh-Token',
     };
 
-    mutation.mutate(user);
+    storeSecureData(user);
   };
 
   const removeDataDemo = async () => {
@@ -57,14 +41,12 @@ export const DemoBiometric = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text style={styles.title}>{mutation.status}</Text>
-
         <AppButton title="Supported biometric type" onPress={showSupportedBiometryType} />
         <AppButton title="Store secure data" onPress={() => storeDataDemo()} />
         <AppButton title="Remove secure data" onPress={removeDataDemo} />
         <AppButton title="Biometric test" onPress={getSecureDataDemo} />
 
-        {mutation.isLoading && <ActivityIndicator color="red" />}
+        {isStoring && <ActivityIndicator color="red" />}
       </ScrollView>
     </SafeAreaView>
   );
