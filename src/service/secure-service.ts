@@ -1,8 +1,13 @@
 import * as Keychain from 'react-native-keychain';
 
+export type ServiceData = {
+  data: unknown;
+  service: string;
+};
+
 const options: Keychain.Options = {
-  accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
-  accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED,
+  accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+  accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
   authenticationType: Keychain.AUTHENTICATION_TYPE.DEVICE_PASSCODE_OR_BIOMETRICS,
   authenticationPrompt: {
     title: 'Identification biométrique requise',
@@ -38,15 +43,16 @@ export const getSupportedBiometryType = async (): Promise<null | BiometryTypeEnu
   }
 };
 
-export const storeSecureData = async (data: unknown): Promise<boolean> => {
-  const result = await Keychain.setGenericPassword('secure-data', JSON.stringify(data), options);
+export const storeSecureData = async ({data, service}: ServiceData): Promise<boolean> => {
+  const jsonData = JSON.stringify(data);
+  const result = await Keychain.setGenericPassword('secure-data', jsonData, {...options, service});
   console.log('Storage result', result);
 
   return typeof result === 'object';
 };
 
-export const getSecureData = async (): Promise<any | null> => {
-  const credentials = await Keychain.getGenericPassword(options);
+export const getSecureData = async (service: string): Promise<any | null> => {
+  const credentials = await Keychain.getGenericPassword({...options, service});
   if (credentials) {
     return JSON.parse(credentials.password);
   } else {
@@ -54,6 +60,10 @@ export const getSecureData = async (): Promise<any | null> => {
   }
 };
 
-export const removeSecureData = async (): Promise<boolean> => {
-  return Keychain.resetGenericPassword();
+export const removeSecureData = async (service: string): Promise<boolean> => {
+  return Keychain.resetGenericPassword({...options, service});
+};
+
+export const getAllServices = async (): Promise<string[]> => {
+  return Keychain.getAllGenericPasswordServices();
 };

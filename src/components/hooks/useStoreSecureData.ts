@@ -1,8 +1,8 @@
 import {useMutation} from 'react-query';
-import {storeSecureData as storeSecureDataService} from '../../service/secure-service';
+import {ServiceData, storeSecureData as storeSecureDataService} from '../../service/secure-service';
 
 export const useStoreSecureData = () => {
-  const storeData = async (data: unknown): Promise<boolean> => {
+  const storeData = async (data: ServiceData): Promise<boolean> => {
     // Leave some time to the UI thread to update any spinner mechanism
     await new Promise(resolve => setTimeout(resolve, 0));
 
