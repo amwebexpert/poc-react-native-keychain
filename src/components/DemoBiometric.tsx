@@ -72,9 +72,10 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    padding: 4,
+    paddingHorizontal: 8,
     borderWidth: 1,
-    backgroundColor: 'lightblue',
+    borderColor: 'lightblue',
+    backgroundColor: 'lightgrey',
     color: 'darkblue',
   },
 });
