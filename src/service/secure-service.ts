@@ -1,7 +1,7 @@
 import * as Keychain from 'react-native-keychain';
 
-export type ServiceData = {
-  data: unknown;
+export type ServiceData<T> = {
+  data: T;
   service: string;
 };
 
@@ -23,7 +23,7 @@ export enum BiometryTypeEnum {
   IRIS = 'Iris',
 }
 
-export const getSupportedBiometryType = async (): Promise<null | BiometryTypeEnum> => {
+export const getSupportedBiometryType = async (): Promise<undefined | BiometryTypeEnum> => {
   const type = await Keychain.getSupportedBiometryType(options);
   // console.log('Supported biometric type', type);
   switch (type) {
@@ -39,11 +39,11 @@ export const getSupportedBiometryType = async (): Promise<null | BiometryTypeEnu
       return BiometryTypeEnum.IRIS;
 
     default:
-      return null;
+      return undefined;
   }
 };
 
-export const storeSecureData = async ({data, service}: ServiceData): Promise<boolean> => {
+export const storeSecureData = async <T>({data, service}: ServiceData<T>): Promise<boolean> => {
   const jsonData = JSON.stringify(data);
   const result = await Keychain.setGenericPassword('secure-data', jsonData, {...options, service});
   console.log('Storage result', result);
@@ -51,12 +51,12 @@ export const storeSecureData = async ({data, service}: ServiceData): Promise<boo
   return typeof result === 'object';
 };
 
-export const getSecureData = async (service: string): Promise<any | null> => {
+export const getSecureData = async <T>(service: string): Promise<T | undefined> => {
   const credentials = await Keychain.getGenericPassword({...options, service});
   if (credentials) {
     return JSON.parse(credentials.password);
   } else {
-    return null;
+    return undefined;
   }
 };
 
